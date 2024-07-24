@@ -30,11 +30,18 @@ public class CafeKiosk {
 	}
 
 	public int calculateTotalPrice() {
+		/*
 		int total = 0;
 		for (Beverage beverage : beverages) {
 			total += beverage.getPrice();
 		}
 		return total;
+		 */
+
+		// 람다식 활용
+		return beverages.stream()
+				.mapToInt(Beverage::getPrice)
+				.sum();
 	}
 
 	public void remove(Beverage beverage) {
