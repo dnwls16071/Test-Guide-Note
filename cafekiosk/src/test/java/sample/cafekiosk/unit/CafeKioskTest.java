@@ -1,6 +1,9 @@
 package sample.cafekiosk.unit;
 
 import org.junit.jupiter.api.Test;
+import sample.cafekiosk.order.Order;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
@@ -10,7 +13,7 @@ class CafeKioskTest {
 	@Test
 	void add_manual_test() {
 		CafeKiosk cafeKiosk = new CafeKiosk();
-		//cafeKiosk.add(new Americano(), 1);
+		cafeKiosk.add(new Americano(), 1);
 		System.out.println(">>> 담긴 음료 수: " + cafeKiosk.getBeverages().size());
 		System.out.println(">>> 담긴 음료: " + cafeKiosk.getBeverages().get(0).getName());
 	}
@@ -18,7 +21,7 @@ class CafeKioskTest {
 	@Test
 	void add() {
 		CafeKiosk cafeKiosk = new CafeKiosk();
-		//cafeKiosk.add(new Americano(), 1);
+		cafeKiosk.add(new Americano(), 1);
 
 		assertThat(cafeKiosk.getBeverages()).hasSize(1);
 		assertThat(cafeKiosk.getBeverages().get(0).getName()).isEqualTo("아메리카노");
@@ -42,8 +45,8 @@ class CafeKioskTest {
 		Americano americano = new Americano();
 		Latte latte = new Latte();
 
-		//cafeKiosk.add(americano, 1);
-		//cafeKiosk.add(latte, 1);
+		cafeKiosk.add(americano, 1);
+		cafeKiosk.add(latte, 1);
 		assertThat(cafeKiosk.getBeverages()).hasSize(2);
 
 		cafeKiosk.clear();
@@ -77,5 +80,23 @@ class CafeKioskTest {
 		assertThatThrownBy(() -> cafeKiosk.add(americano, 0))
 				.isInstanceOf(IllegalStateException.class)
 				.hasMessage("음료는 최소 한 잔 이상 주문해야합니다!");
+	}
+
+	@Test
+	void createOrder() {
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+
+		cafeKiosk.add(americano);
+
+		// 해피 케이스
+		Order order1 = cafeKiosk.createOrder(LocalDateTime.of(2024, 7, 24, 13, 0));
+		assertThat(order1.getBeverages()).hasSize(1);
+		assertThat(order1.getBeverages().get(0).getName()).isEqualTo("아메리카노");
+
+		// 예외 케이스
+		assertThatThrownBy(() -> cafeKiosk.createOrder(LocalDateTime.of(2024, 7, 24, 23, 50)))
+				.isInstanceOf(IllegalStateException.class)
+				.hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요!");
 	}
 }
