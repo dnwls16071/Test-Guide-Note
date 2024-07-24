@@ -12,8 +12,13 @@ public class CafeKiosk {
 
 	private final List<Beverage> beverages = new ArrayList<>();
 
-	public void add(Beverage beverage) {
-		beverages.add(beverage);
+	public void add(Beverage beverage, int amount) {
+		if (amount <= 0) {
+			throw new IllegalStateException("음료는 최소 한 잔 이상 주문해야합니다!");
+		}
+		for (int i=0; i<amount; i++) {
+			beverages.add(beverage);	// 하나의 음료를 여러 개 넣을 수 있다는 요구사항
+		}
 	}
 
 	public int calculateTotalPrice() {
