@@ -51,3 +51,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  # 추가한 부분 : 테스트 프로파일로 테스트를 돌릴 경우 데이터가 들어가지 않도록 설정
+  sql:
+    init:
+      mode: never
